@@ -36,12 +36,55 @@ class VectorStoreManager:
             logger.info("FAISS vector database index does not exist yet. It will be initialized when documents are uploaded.")
 
     def add_documents(self, documents: List[Document]):
-        """Creates or appends documents to the FAISS index and persists it."""
+        """Creates or appends documents to the FAISS index and persists it with batching & backoff retries."""
+        import time
+        
+        batch_size = 15  # Smaller batch size to prevent exceeding 100 RPM
+        delay_seconds = 2.0  # Delay between successful batches
+        max_retries = 5
+        
+        logger.info(f"Adding {len(documents)} documents to FAISS in batches of {batch_size}...")
+        
+        # Helper to embed a batch with retry logic
+        def add_batch_with_retry(batch_docs: List[Document], is_first: bool):
+            retries = 0
+            backoff = 2.0
+            while retries < max_retries:
+                try:
+                    if is_first:
+                        # Initialize self.db with the first batch
+                        self.db = FAISS.from_documents(batch_docs, embeddings)
+                    else:
+                        self.db.add_documents(batch_docs)
+                    return  # Success!
+                except Exception as ex:
+                    err_str = str(ex).lower()
+                    if "429" in err_str or "resource_exhausted" in err_str or "rate limit" in err_str:
+                        retries += 1
+                        logger.warning(
+                            f"Rate limit hit while embedding batch (attempt {retries}/{max_retries}). "
+                            f"Retrying in {backoff} seconds..."
+                        )
+                        time.sleep(backoff)
+                        backoff *= 2.0  # Exponential backoff
+                    else:
+                        # Non-rate-limit error: raise immediately
+                        raise ex
+            # If we exhausted retries
+            raise Exception("Failed to embed batch of documents after maximum retries due to rate limiting.")
+
         try:
-            if not self.db:
-                self.db = FAISS.from_documents(documents, embeddings)
-            else:
-                self.db.add_documents(documents)
+            # Process documents in batches
+            for i in range(0, len(documents), batch_size):
+                batch = documents[i:i+batch_size]
+                is_first_batch = (self.db is None)
+                
+                logger.info(f"Processing batch {i // batch_size + 1} / {-(-len(documents) // batch_size)} (size: {len(batch)})...")
+                add_batch_with_retry(batch, is_first_batch)
+                
+                # Sleep briefly between batches to avoid hitting rate limits
+                if i + batch_size < len(documents):
+                    time.sleep(delay_seconds)
             
             # Persist to disk
             os.makedirs(os.path.dirname(self.index_path), exist_ok=True)
