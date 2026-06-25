@@ -1,0 +1,71 @@
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+frontend/.env.*
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+env/
+.pyre/
+.hypothesis/
+.ipynb_checkpoints/
+
+# Backend artifacts
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/*.sqlite3
+backend/*.db
+
+# ML / data artifacts (keep source datasets and tracked model as needed)
+*.joblib
+!data/safety_risk_model.joblib
+*.pkl
+*.h5
+*.onnx
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+frontend/coverage/
+frontend/.eslintcache
+
+# Build and temp
+build/
+dist/
+tmp/
+temp/
+.cache/

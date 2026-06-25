@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#03060a] text-slate-100 selection:bg-indigo-600 selection:text-white;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .font-mono-tech {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Premium Glassmorphic Card Styling */
+  .glass-card {
+    @apply bg-[#060a12]/80 backdrop-blur-lg border border-slate-900 shadow-2xl rounded-xl transition-all duration-300 relative;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
+  }
+  
+  .glass-card-hover {
+    @apply hover:border-indigo-500/30 hover:shadow-indigo-500/5 hover:-translate-y-0.5;
+  }
+
+  /* Micro-animation transitions */
+  .transition-micro {
+    @apply transition-all duration-200 ease-out;
+  }
+  
+  /* Customized Scrollbar for chat and data grids */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-[#03060a];
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700;
+  }
+}
+
+/* Custom safety status badges glow effect */
+.glow-green {
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+.glow-amber {
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+}
+.glow-orange {
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
+  text-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
+}
+.glow-red {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Radar scan sweep animation for SCADA floorplan */
+@keyframes scanSweep {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+.animate-scan-sweep {
+  animation: scanSweep 4s linear infinite;
+}
+
+/* LED Indicator pulsing */
+@keyframes ledPulse {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px currentColor);
+  }
+  50% {
+    opacity: 0.35;
+    filter: drop-shadow(0 0 1.5px currentColor);
+  }
+}
+
+.animate-led {
+  animation: ledPulse 1.5s ease-in-out infinite;
+}
+
+/* High-tech tech card backgrounds */
+.scada-grid-bg {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Sci-fi panel corner markers */
+.tech-corner-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid rgba(99, 102, 241, 0.55);
+  border-left: 1.5px solid rgba(99, 102, 241, 0.55);
+  pointer-events: none;
+}
+.tech-corner-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid rgba(99, 102, 241, 0.55);
+  border-right: 1.5px solid rgba(99, 102, 241, 0.55);
+  pointer-events: none;
+}
+.tech-corner-bl {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 1.5px solid rgba(99, 102, 241, 0.55);
+  border-left: 1.5px solid rgba(99, 102, 241, 0.55);
+  pointer-events: none;
+}
+.tech-corner-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 1.5px solid rgba(99, 102, 241, 0.55);
+  border-right: 1.5px solid rgba(99, 102, 241, 0.55);
+  pointer-events: none;
+}
+
+/* Flashing critical border */
+@keyframes criticalBorderFlash {
+  0%, 100% {
+    border-color: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.05);
+  }
+  50% {
+    border-color: rgba(239, 68, 68, 0.65);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.25);
+  }
+}
+.border-critical-flash {
+  animation: criticalBorderFlash 2s infinite;
+}
+
+/* Subtle CRT Scanline overlay */
+@keyframes scanlineMove {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+.scanline-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(99, 102, 241, 0.03) 10%,
+    rgba(255, 255, 255, 0) 20%
+  );
+  animation: scanlineMove 12s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
